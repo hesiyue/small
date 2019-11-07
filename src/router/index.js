@@ -5,6 +5,7 @@ const Home = ()=> import('../views/home/Home')
 const Car = ()=> import('../views/car/Car')
 const Category = ()=> import('../views/category/Category')
 const Info = ()=> import('../views/info/Info')
+const Detail = ()=> import('../views/detail/Detail')
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,10 @@ const routes = [
   {
     path: '/category',
     component: Category
+  },
+  {
+    path: '/detail/:id',
+    component: Detail
   }
 ]
 

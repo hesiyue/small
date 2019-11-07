@@ -1,6 +1,7 @@
 <template>
     <div class="home">
        <nav-bar class="nav-bar"><div slot="center">主页</div></nav-bar>
+        <tab-control :titles="Text" ref="tabControl2" @tabClick="changeGoods" class="tab-control" v-show="isTabFixed"></tab-control>
 <!--        监听组件的原生事件要用.native-->
        <back-top @click.native="backToTop" v-show="isShow"></back-top>
         <scroll class="content" ref="scroll"
@@ -8,112 +9,10 @@
                 @scrollBack="showBackTop"
                 :pull-up-load="true"
                 @pullingUp="loadMore">
-            <home-swiper></home-swiper>
+            <home-swiper @swiperImgLoad="swiperImgLoad"></home-swiper>
             <recommand-view></recommand-view>
-            <tab-control :titles="Text" class="tab-control" @tabClick="changeGoods"></tab-control>
+            <tab-control :titles="Text" ref="tabControl" @tabClick="changeGoods"></tab-control>
             <goods-list :goods="showGoods"></goods-list>
-            <ul>
-                <li>占位1</li>
-                <li>占位2</li>
-                <li>占位3</li>
-                <li>占位4</li>
-                <li>占位5</li>
-                <li>占位6</li>
-                <li>占位7</li>
-                <li>占位8</li>
-                <li>占位9</li>
-                <li>占位10</li>
-                <li>占位11</li>
-                <li>占位12</li>
-                <li>占位13</li>
-                <li>占位14</li>
-                <li>占位15</li>
-                <li>占位16</li>
-                <li>占位17</li>
-                <li>占位18</li>
-                <li>占位19</li>
-                <li>占位20</li>
-                <li>占位21</li>
-                <li>占位22</li>
-                <li>占位23</li>
-                <li>占位24</li>
-                <li>占位25</li>
-                <li>占位26</li>
-                <li>占位27</li>
-                <li>占位28</li>
-                <li>占位29</li>
-                <li>占位30</li>
-                <li>占位31</li>
-                <li>占位32</li>
-                <li>占位33</li>
-                <li>占位34</li>
-                <li>占位35</li>
-                <li>占位36</li>
-                <li>占位37</li>
-                <li>占位38</li>
-                <li>占位39</li>
-                <li>占位40</li>
-                <li>占位41</li>
-                <li>占位42</li>
-                <li>占位43</li>
-                <li>占位44</li>
-                <li>占位45</li>
-                <li>占位46</li>
-                <li>占位47</li>
-                <li>占位48</li>
-                <li>占位49</li>
-                <li>占位50</li>
-                <li>占位51</li>
-                <li>占位52</li>
-                <li>占位53</li>
-                <li>占位54</li>
-                <li>占位55</li>
-                <li>占位56</li>
-                <li>占位57</li>
-                <li>占位58</li>
-                <li>占位59</li>
-                <li>占位60</li>
-                <li>占位61</li>
-                <li>占位62</li>
-                <li>占位63</li>
-                <li>占位64</li>
-                <li>占位65</li>
-                <li>占位66</li>
-                <li>占位67</li>
-                <li>占位68</li>
-                <li>占位69</li>
-                <li>占位70</li>
-                <li>占位71</li>
-                <li>占位72</li>
-                <li>占位73</li>
-                <li>占位74</li>
-                <li>占位75</li>
-                <li>占位76</li>
-                <li>占位77</li>
-                <li>占位78</li>
-                <li>占位79</li>
-                <li>占位80</li>
-                <li>占位81</li>
-                <li>占位82</li>
-                <li>占位83</li>
-                <li>占位84</li>
-                <li>占位85</li>
-                <li>占位86</li>
-                <li>占位87</li>
-                <li>占位88</li>
-                <li>占位89</li>
-                <li>占位90</li>
-                <li>占位91</li>
-                <li>占位92</li>
-                <li>占位93</li>
-                <li>占位94</li>
-                <li>占位95</li>
-                <li>占位96</li>
-                <li>占位97</li>
-                <li>占位98</li>
-                <li>占位99</li>
-                <li>占位100</li>
-            </ul>
         </scroll>
     </div>
 </template>
@@ -129,6 +28,7 @@
     import GoodsList from "components/content/goods/GoodsList";
     import Scroll from "components/common/scroll/Scroll";
     import BackTop from "components/content/backTop/BackTop";
+    import {debounce} from "../../common/utils";
 
     export default {
         name: "Home",
@@ -137,27 +37,30 @@
             return {
                 Text: ['流行','新款','精选'],
                 goods: {
-                    'pop': {page:0,list: [{img:'https://s5.mogucdn.com/mlcdn/776a41/191030_3g5fc5k3djc7f27eb6d30fa328kb1_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色丝袜',price:66.7,collect:77},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08d4ih63dfl7h1ggglb077a2jih08_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色裙子',price:128,collect:255},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191030_635fch4eh1ei0ghce7d04gd29lgak_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色漂亮裙子',price:256,collect:376},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191030_075hg9d288045ca35h4b23342c093_750x1125.jpg_440x587.v1cAC.40.webp',message:'赫本小黑裙',price:1128,collect:2525}]},
+                    'pop': {page:0,list: [{id:1,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_3g5fc5k3djc7f27eb6d30fa328kb1_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色丝袜',price:66.7,collect:77},
+                            {id:2,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08d4ih63dfl7h1ggglb077a2jih08_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色裙子',price:128,collect:255},
+                            {id:3,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_635fch4eh1ei0ghce7d04gd29lgak_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色漂亮裙子',price:256,collect:376},
+                            {id:4,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_075hg9d288045ca35h4b23342c093_750x1125.jpg_440x587.v1cAC.40.webp',message:'赫本小黑裙',price:1128,collect:2525}]},
                     'news': {page:0,list:[
-                            {img:'https://s5.mogucdn.com/mlcdn/c45406/191029_7be58ijgibilbli09dgcehg72124j_640x960.jpg_440x587.v1cAC.40.webp',message:'仙女韩范小白裙',price:109,collect:33},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_1fjahe25aehc8e662i7bji8002abi_750x1125.jpg_440x587.v1cAC.40.webp',message: '秋季法式白裙',price:98,collect: 494},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_373i6dd9belbjg59ebhce084ceh3h_750x1125.jpg_440x587.v1cAC.40.webp',message:'春秋螺纹灰色打底裤',price:28,collect:487},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_3473i6lil32h11c7jd2if9b4fah0f_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色牛仔裤',price:98,collect:876},
+                            {id:5,img:'https://s5.mogucdn.com/mlcdn/c45406/191029_7be58ijgibilbli09dgcehg72124j_640x960.jpg_440x587.v1cAC.40.webp',message:'仙女韩范小白裙',price:109,collect:33},
+                            {id:6,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_1fjahe25aehc8e662i7bji8002abi_750x1125.jpg_440x587.v1cAC.40.webp',message: '秋季法式白裙',price:98,collect: 494},
+                            {id:7,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_373i6dd9belbjg59ebhce084ceh3h_750x1125.jpg_440x587.v1cAC.40.webp',message:'春秋螺纹灰色打底裤',price:28,collect:487},
+                            {id:8,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_3473i6lil32h11c7jd2if9b4fah0f_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色牛仔裤',price:98,collect:876},
                         ]},
                     'sell': {page:0,list:[
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_625l8c9fhd581ace37c675ealc728_750x1125.jpg_440x587.v1cAC.40.webp',message:'加绒牛仔裤',price:109,collect:33},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08bh2fba3c00e0hbl07j783g36ehf_750x1125.jpg_440x587.v1cAC.40.webp',message:'打底裤秋季女袜',price:109,collect:33},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_8ef9e560hj4eb6310112c73h3j25j_750x1125.jpg_440x587.v1cAC.40.webp',message:'高腰牛仔裤',price:1069,collect:332},
-                            {img:'https://s5.mogucdn.com/mlcdn/776a41/191104_14c818dbfe8675b78db8ghfk6lj12_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色宽松运动裤',price:169,collect:32},
+                            {id:9,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_625l8c9fhd581ace37c675ealc728_750x1125.jpg_440x587.v1cAC.40.webp',message:'加绒牛仔裤',price:109,collect:33},
+                            {id:10,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08bh2fba3c00e0hbl07j783g36ehf_750x1125.jpg_440x587.v1cAC.40.webp',message:'打底裤秋季女袜',price:109,collect:33},
+                            {id:11,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_8ef9e560hj4eb6310112c73h3j25j_750x1125.jpg_440x587.v1cAC.40.webp',message:'高腰牛仔裤',price:1069,collect:332},
+                            {id:12,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_14c818dbfe8675b78db8ghfk6lj12_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色宽松运动裤',price:169,collect:32},
 
                         ]},
 
                 },
                 currentType: 'pop',
-                isShow: false
+                isShow: false,
+                tabOffSetTop: 0,
+                isTabFixed: false,
+                saveY :0
 
             }
         },
@@ -179,24 +82,48 @@
                      this.currentType = 'sell'
                  break;
              }
+             this.$refs.tabControl2.currentIndex = index
+             this.$refs.tabControl.currentIndex= index
           },
           backToTop(){
               // scrollTo回到某一个位置（x,y)
               // props是父组件传子组件 ref refs是子组件传父组件
-              this.$refs.scroll.scroll.scrollTo(0,0,500)
+              this.$refs.scroll.scroll && this.$refs.scroll.scroll.scrollTo(0,0,500)
           },
           showBackTop(position){
               this.isShow = (position.y < -1000)
+
+              this.isTabFixed = (-position.y> this.tabOffSetTop)
           },
           loadMore(){
              this.goods[this.currentType].list.push(...this.goods['sell'].list)
+              this.$refs.scroll.finishPullUp()
+          },
+          swiperImgLoad(){
+              this.tabOffSetTop = this.$refs.tabControl.$el.offsetTop;
           }
         },
         mounted() {
+            // 防抖函数 debounce
+            const refresh = debounce(this.$refs.scroll.refresh,200)
+            this.$bus.$on('itemImgLoad',()=>{
+                refresh()
+            })
+            // $el可以拿到组件内部的所有元素
 
         },
         created() {
 
+        },
+        destroyed() {
+            console.log('home被销毁啦');
+        },
+        activated() {
+            this.$refs.scroll.scroll.scrollTo(0,this.saveY,0)
+            this.$refs.scroll.refresh()
+        },
+        deactivated() {
+            this.saveY = this.$refs.scroll.scroll.y
         }
     }
 </script>
@@ -213,6 +140,13 @@
        color: #ffffff;
    }
 
+   .fixed {
+       position: fixed;
+       left: 0;
+       right: 0;
+       height: 44px;
+   }
+
    .content {
        position: absolute;
        top: 44px;
@@ -221,6 +155,12 @@
        left: 0;
        right: 0;
 
+   }
+
+   .tab-control {
+       position: relative;
+       z-index: 9;
+       background-color: #ffffff;
    }
 
 

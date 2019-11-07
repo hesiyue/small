@@ -34,15 +34,21 @@
             this.scroll.on('scroll',position=>{
                 this.$emit('scrollBack',position)
             })
-            this.scroll.on('pullingUp',()=>{
-                this.$emit('pullingUp')
-                // 操作完成后必须要setTimeout里面finishPullUp,否则只会刷新一次
-                setTimeout(()=>{
-                    this.scroll.finishPullUp()
-                },1000)
-                 this.scroll.refresh()
+            if(this.pullUpLoad){
+                this.scroll.on('pullingUp',()=>{
+                    this.$emit('pullingUp')
+                })
+            }
 
-            })
+        },
+        methods: {
+            refresh(){
+                this.scroll && this.scroll.refresh();
+            },
+            // 操作完成后必须要finishPullUp,否则只会刷新一次
+            finishPullUp(){
+                this.scroll && this.scroll.finishPullUp();
+            }
         }
     }
 </script>

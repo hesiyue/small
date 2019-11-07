@@ -1,12 +1,9 @@
 <template>
-    <div id="wraper">
-        <swiper class="swiper" :options="swiperOption" ref="mySwiper" v-if="imgArray.length>1">
-            <swiper-slide class="swiperslid" v-for="(item,index) in imgArray" :key="index">
-                <img :src="item">
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-    </div>
+    <swiper class="swiper" :options="swiperOption" ref="mySwiper" v-if="imgArray.length>1">
+        <swiper-slide class="swiperslid" v-for="(item,index) in imgArray" :key="index">
+            <img :src="item" @load="imgLoad">
+        </swiper-slide>
+    </swiper>
 </template>
 
 <script>
@@ -26,14 +23,11 @@
                 ],
                 swiperOption: {
                     loop: true,
-                    autoplay:true,
+                    autoplay:{
+                      disableOnInteraction: false
+                    },
                     notNextTick: true,
                     speed: 800,
-                    pagination: {
-                        el: ".swiper-pagination",
-                        clickable: true
-                    },
-
                     pagination: {
                         el:'.swiper-pagination',
                         clickable: true,
@@ -42,23 +36,25 @@
                     direction: 'horizontal',
                     observe: true,
                     observeParents: true
-                }
+                },
+                isload: false
             }
+
         },
         computed: {
 
+        },
+        methods: {
+            imgLoad(){
+                if(!this.isload)
+                this.$emit('swiperImgLoad')
+                this.isload = true
+            }
         }
     }
 </script>
 
 <style scoped>
-    #wraper {
-        width: 100%;
-        height: 240px;
-        padding-bottom:30.48%;
-        background: #eee
-
-    }
     .swiperslid img {
         width: 100%;
         height: 240px;
