@@ -27,12 +27,11 @@
     import TabControl from "components/common/tabControl/TabControl";
     import GoodsList from "components/content/goods/GoodsList";
     import Scroll from "components/common/scroll/Scroll";
-    import BackTop from "components/content/backTop/BackTop";
-    import {debounce} from "../../common/utils";
+    import {backTopMixin, itemListenerMixin} from "../../common/mixin";
 
     export default {
         name: "Home",
-        components: {GoodsList,TabControl, HomeSwiper, RecommandView, TabBarItem,NavBar, TabBar,Scroll,BackTop},
+        components: {GoodsList,TabControl, HomeSwiper, RecommandView, TabBarItem,NavBar, TabBar,Scroll},
         data(){
             return {
                 Text: ['流行','新款','精选'],
@@ -57,13 +56,14 @@
 
                 },
                 currentType: 'pop',
-                isShow: false,
                 tabOffSetTop: 0,
                 isTabFixed: false,
-                saveY :0
+                saveY :0,
+                itemImgListener: null
 
             }
         },
+        mixins:[itemListenerMixin,backTopMixin],
         computed: {
             showGoods(){
                 return this.goods[this.currentType].list
@@ -85,11 +85,11 @@
              this.$refs.tabControl2.currentIndex = index
              this.$refs.tabControl.currentIndex= index
           },
-          backToTop(){
+          // backToTop(){
               // scrollTo回到某一个位置（x,y)
               // props是父组件传子组件 ref refs是子组件传父组件
-              this.$refs.scroll.scroll && this.$refs.scroll.scroll.scrollTo(0,0,500)
-          },
+              // this.$refs.scroll.scroll && this.$refs.scroll.scroll.scrollTo(0,0,500)
+          // },
           showBackTop(position){
               this.isShow = (position.y < -1000)
 
@@ -105,12 +105,12 @@
         },
         mounted() {
             // 防抖函数 debounce
-            const refresh = debounce(this.$refs.scroll.refresh,200)
-            this.$bus.$on('itemImgLoad',()=>{
-                refresh()
-            })
+            // const refresh = debounce(this.$refs.scroll.refresh,200)
+            // this.itemImgListener = ()=>{
+            //     refresh()
+            // }
+            // this.$bus.$on('itemImgLoad',this.itemImgListener)
             // $el可以拿到组件内部的所有元素
-
         },
         created() {
 
@@ -124,6 +124,7 @@
         },
         deactivated() {
             this.saveY = this.$refs.scroll.scroll.y
+            this.$bus.$off('itemImgLoad',this.itemImgListener)
         }
     }
 </script>

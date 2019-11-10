@@ -29,9 +29,12 @@
                </table>
            </div>
        </div>
-        <div class="shop-bottom" @click="toShop">
-            <div class="enter-shop">进店逛逛</div>
-        </div>
+<!--        <div class="shop-bottom" @click="toShop">-->
+<!--            <div class="enter-shop">进店逛逛</div>-->
+<!--        </div>-->
+            <div class="shop-bottom">
+                <a href="https://shop.mogu.com/1p788q?ptp=31.5bTmG.0.0.Wl5UwJvy"><div class="enter-shop">进店逛逛</div></a>
+            </div>
     </div>
 </template>
 
@@ -53,9 +56,7 @@
             }
         },
         methods: {
-            toShop(){
-                window.location.href= 'https://shop.mogu.com/1p788q?ptp=31.5bTmG.0.0.Wl5UwJvy'
-            }
+
         }
     }
 </script>

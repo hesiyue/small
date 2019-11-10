@@ -33,6 +33,7 @@
             })
             this.scroll.on('scroll',position=>{
                 this.$emit('scrollBack',position)
+                this.$emit('scroll',position)
             })
             if(this.pullUpLoad){
                 this.scroll.on('pullingUp',()=>{
