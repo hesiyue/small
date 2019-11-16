@@ -109,11 +109,13 @@
     .info-imgs {
         margin-top: 10px;
         width: 50px;
+        display: flex;
     }
 
     .info-imgs img {
         width: 70px;
         height: 70px;
         margin-right: 5px;
+
     }
 </style>

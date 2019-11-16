@@ -28,6 +28,8 @@
     import GoodsList from "components/content/goods/GoodsList";
     import Scroll from "components/common/scroll/Scroll";
     import {backTopMixin, itemListenerMixin} from "../../common/mixin";
+    import {POP,NEW,SELL} from "../../common/const";
+    import {getHomeData} from "../../network/home";
 
     export default {
         name: "Home",
@@ -36,25 +38,10 @@
             return {
                 Text: ['流行','新款','精选'],
                 goods: {
-                    'pop': {page:0,list: [{id:1,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_3g5fc5k3djc7f27eb6d30fa328kb1_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色丝袜',price:66.7,collect:77},
-                            {id:2,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08d4ih63dfl7h1ggglb077a2jih08_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色裙子',price:128,collect:255},
-                            {id:3,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_635fch4eh1ei0ghce7d04gd29lgak_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色漂亮裙子',price:256,collect:376},
-                            {id:4,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_075hg9d288045ca35h4b23342c093_750x1125.jpg_440x587.v1cAC.40.webp',message:'赫本小黑裙',price:1128,collect:2525}]},
-                    'news': {page:0,list:[
-                            {id:5,img:'https://s5.mogucdn.com/mlcdn/c45406/191029_7be58ijgibilbli09dgcehg72124j_640x960.jpg_440x587.v1cAC.40.webp',message:'仙女韩范小白裙',price:109,collect:33},
-                            {id:6,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_1fjahe25aehc8e662i7bji8002abi_750x1125.jpg_440x587.v1cAC.40.webp',message: '秋季法式白裙',price:98,collect: 494},
-                            {id:7,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_373i6dd9belbjg59ebhce084ceh3h_750x1125.jpg_440x587.v1cAC.40.webp',message:'春秋螺纹灰色打底裤',price:28,collect:487},
-                            {id:8,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_3473i6lil32h11c7jd2if9b4fah0f_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色牛仔裤',price:98,collect:876},
-                        ]},
-                    'sell': {page:0,list:[
-                            {id:9,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_625l8c9fhd581ace37c675ealc728_750x1125.jpg_440x587.v1cAC.40.webp',message:'加绒牛仔裤',price:109,collect:33},
-                            {id:10,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08bh2fba3c00e0hbl07j783g36ehf_750x1125.jpg_440x587.v1cAC.40.webp',message:'打底裤秋季女袜',price:109,collect:33},
-                            {id:11,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_8ef9e560hj4eb6310112c73h3j25j_750x1125.jpg_440x587.v1cAC.40.webp',message:'高腰牛仔裤',price:1069,collect:332},
-                            {id:12,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_14c818dbfe8675b78db8ghfk6lj12_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色宽松运动裤',price:169,collect:32},
-
-                        ]},
-
-                },
+                    'pop': {page: 0,list:[]},
+                    'new': {page: 0,list:[]},
+                    'sell': {page: 0,list:[]}
+                    },
                 currentType: 'pop',
                 tabOffSetTop: 0,
                 isTabFixed: false,
@@ -76,7 +63,7 @@
                      this.currentType = 'pop'
                      break
                  case 1:
-                     this.currentType = 'news'
+                     this.currentType = 'new'
                      break
                  case 2:
                      this.currentType = 'sell'
@@ -101,6 +88,11 @@
           },
           swiperImgLoad(){
               this.tabOffSetTop = this.$refs.tabControl.$el.offsetTop;
+          },
+          getHomeProducts(type){
+              getHomeData(type).then(res=>{
+                  this.goods[type].list.push(...res.data)
+              })
           }
         },
         mounted() {
@@ -114,6 +106,9 @@
         },
         created() {
 
+            this.getHomeProducts(POP)
+            this.getHomeProducts(NEW)
+            this.getHomeProducts(SELL)
         },
         destroyed() {
             console.log('home被销毁啦');

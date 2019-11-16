@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import toast from 'components/common/toast'
+import toastRegistry from "./components/common/toast";
 import FastClick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
 
@@ -13,6 +13,8 @@ Vue.prototype.$bus = new Vue()
 Vue.config.productionTip = false
 FastClick.attach(document.body)
 Vue.use(VueLazyLoad)
+// 这里也可以直接执行 toastRegistry()
+Vue.use(toastRegistry)
 
 
 

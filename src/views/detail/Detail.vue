@@ -33,6 +33,7 @@
     import {itemListenerMixin,backTopMixin} from "../../common/mixin";
     import {debounce} from "../../common/utils";
     import DetailBottomBar from "./childComps/DetailBottomBar";
+    import {getGoodsDetail, getGoodsImg, getHomeMultiData} from "../../network/home";
 
 
     export default {
@@ -54,12 +55,12 @@
             return {
                 id: null,
                 detailGoods: {
-                    id: 2,
-                    title: '秋季新款法式复古中长款系绳收腰针织连衣裙宽松显廋打底毛衣裙子',
-                    oldPrice: 155,
-                    price: 109,
+                    id: null,
+                    title: null,
+                    oldPrice: null,
+                    price: null,
                     columns: ['销量10042', '收藏616人', '退货补运费'],
-                    desc: '该产品买五件打七折',
+                    desc: null,
                     rate: {
                         cRate: 125,
                         canExplain: false,
@@ -100,35 +101,13 @@
                                     {name:'价格合理',scores:5,isBetter:true},
                                     {name:'质量满意',scores:4.62,isBetter:false}]
                     },
-                    image1: ['https://s11.mogucdn.com/mlcdn/776a41/191106_2ej91iibg602c8fbc777hicj3ci3f_750x1000.jpg_468x468.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_5j56k32a27jijde52dl6238f269ji_640x960.jpg_468x468.jpg',
-                    'https://s11.mogucdn.com/mlcdn/c45406/190829_69ej20id7ad6570j4ld550a3j8463_640x960.jpg_468x468.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_35c1dfh3ik0f63b38fk04533dgf3c_640x960.jpg_468x468.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_3h86ej1dih0172j8e5ei3bef48817_640x960.jpg_468x468.jpg'],
-                    image2: ['https://s5.mogucdn.com/mlcdn/c45406/190829_6f178cbge9b13e89le93bal6e4c61_650x650.jpg_750x999.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_4dkf1048bgihc3g0bkd5ek0ij0918_650x650.jpg_750x999.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_1dek89g7c37gf94ck9ecb6aig3gfl_650x683.jpg_750x999.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_582bff54bib54g30c6ga162c9jjhf_650x650.jpg_750x999.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_6ke99cchc7a84j59k7e66ijajfe12_650x650.jpg_750x999.jpg',
-                    'https://s5.mogucdn.com/mlcdn/c45406/190829_1adfgi8c411b6ih5fik190g0blhg6_650x650.jpg_750x999.jpg']
+                    img:[]
                 },
-                goods: [
-                            {id:1,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_3g5fc5k3djc7f27eb6d30fa328kb1_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色丝袜',price:66.7,collect:77},
-                            {id:2,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08d4ih63dfl7h1ggglb077a2jih08_750x1125.jpg_440x587.v1cAC.40.webp',message:'白色裙子',price:128,collect:255},
-                            {id:3,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_635fch4eh1ei0ghce7d04gd29lgak_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色漂亮裙子',price:256,collect:376},
-                            {id:4,img:'https://s5.mogucdn.com/mlcdn/776a41/191030_075hg9d288045ca35h4b23342c093_750x1125.jpg_440x587.v1cAC.40.webp',message:'赫本小黑裙',price:1128,collect:2525},
-                            {id:5,img:'https://s5.mogucdn.com/mlcdn/c45406/191029_7be58ijgibilbli09dgcehg72124j_640x960.jpg_440x587.v1cAC.40.webp',message:'仙女韩范小白裙',price:109,collect:33},
-                            {id:6,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_1fjahe25aehc8e662i7bji8002abi_750x1125.jpg_440x587.v1cAC.40.webp',message: '秋季法式白裙',price:98,collect: 494},
-                            {id:7,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_373i6dd9belbjg59ebhce084ceh3h_750x1125.jpg_440x587.v1cAC.40.webp',message:'春秋螺纹灰色打底裤',price:28,collect:487},
-                            {id:8,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_3473i6lil32h11c7jd2if9b4fah0f_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色牛仔裤',price:98,collect:876},
-                            {id:9,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_625l8c9fhd581ace37c675ealc728_750x1125.jpg_440x587.v1cAC.40.webp',message:'加绒牛仔裤',price:109,collect:33},
-                            {id:10,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_08bh2fba3c00e0hbl07j783g36ehf_750x1125.jpg_440x587.v1cAC.40.webp',message:'打底裤秋季女袜',price:109,collect:33},
-                            {id:11,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_8ef9e560hj4eb6310112c73h3j25j_750x1125.jpg_440x587.v1cAC.40.webp',message:'高腰牛仔裤',price:1069,collect:332},
-                            {id:12,img:'https://s5.mogucdn.com/mlcdn/776a41/191104_14c818dbfe8675b78db8ghfk6lj12_750x1125.jpg_440x587.v1cAC.40.webp',message:'黑色宽松运动裤',price:169,collect:32}
-                      ],
+                goods: [],
                 itemImgListener: null,
                 themeTopYs:[],
-                getThemeTop:null
+                getThemeTop:null,
+
             }
         },
         created() {
@@ -140,9 +119,42 @@
                 this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
                 this.themeTopYs.push(this.$refs.recommand.$el.offsetTop)
             },100)
+            getGoodsDetail(4).then(res=>{
+                const detail = res.data
+                this.detailGoods.id = detail.id
+                this.detailGoods.title = detail.title
+                this.detailGoods.oldPrice = detail.oldprice
+                this.detailGoods.price = detail.price
+                this.detailGoods.desc = detail.desc
+            })
+            getHomeMultiData().then(res=>{
+                this.goods.push(...res.data)
+            })
+            getGoodsImg(4).then(res=>{
+               const detail = res.data
+               detail.forEach(item=>{
+                   this.detailGoods.img.push(item.url)
+               })
+            })
         },
         mounted() {
-            this.getThemeTop()
+            getGoodsDetail(4).then(res=>{
+                const detail = res.data
+                this.detailGoods.id = detail.id
+                this.detailGoods.title = detail.title
+                this.detailGoods.oldPrice = detail.oldprice
+                this.detailGoods.price = detail.price
+                this.detailGoods.desc = detail.desc
+            })
+            getHomeMultiData().then(res=>{
+                this.goods.push(...res.data)
+            })
+            getGoodsImg(4).then(res=>{
+                const detail = res.data
+                detail.forEach(item=>{
+                    this.detailGoods.img.push(item.url)
+                })
+            })
         },
         activated() {
         },
@@ -180,16 +192,16 @@
                 // 调用mutations时用commit,调用actions用patch
                 // this.$store.commit('addCart',product)
                 this.$store.dispatch('addCart',product).then(res=>{
-                    console.log(res);
+                    this.$toast('加入购物车成功',4000)
                 })
             },
             toBuy(){
-                console.log('购买成功');
+                this.$toast('购买成功')
             }
 
         },
         updated() {
-
+            this.getThemeTop()
         }
     }
 </script>
