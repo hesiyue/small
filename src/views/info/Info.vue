@@ -9,6 +9,9 @@
 </template>
 
 <script>
+    import {mapMutations} from 'vuex'
+    import {getCartList} from "../../network/cart";
+
     export default {
         name: "Info",
         data(){
@@ -20,18 +23,23 @@
             }
         },
         methods: {
+            ...mapMutations(['changeLogin']),
           login(){
              this.$axios
                  .post('/login',{
                      username: this.loginForm.username,
                      password: this.loginForm.password
-                 }).then(successResponse=>{
-                     if(successResponse.data.code===200)
-                         this.$router.replace('/home')
+                 }).then(res=>{
+                 if(res.data.code===200)
+                     {
+                              this.userToken = res.data.userID;
+                              this.changeLogin(this.userToken)
+                         console.log(localStorage.getItem('Authorization'));
+                         this.$toast('登陆成功',2000)
+                     }
                      else
                          console.log('没找到对应数据');
-             }).catch(failResponse =>{})
-
+             })
           }
         },
     }

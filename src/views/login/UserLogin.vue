@@ -4,12 +4,11 @@
 			<div slot="left" @click="goBack">返回</div>
 			<div slot="center">登陆商城</div>
 		</nav-bar>
-<!--		<div class="db_login_top"><a href="javascript:void(0);" class="cancel" @click="goBack">取消</a>登录商城</div>-->
 		<div class="db_login_form">
 			<form>
 				<p class="form_item"><input type="text"  v-model="loginForm.username" placeholder="邮箱/手机号/用户名"></p>
 				<p class="form_item"><input type="password" v-model="loginForm.password" placeholder="密码"></p>
-				<p class="form_btn"><button type="submit" @click="login">登录</button></p>
+				<p class="form_btn"><input type="button" value="登录" @click="login"></p>
 			</form>
 		</div>
 		<div class="login_other">使用其它方式登录 & 找回密码</div>
@@ -20,6 +19,7 @@
 </template>
 <script>
 	import NavBar from "components/common/navbar/NavBar";
+	import {mapMutations} from 'vuex'
 	export default {
 		name: "UserLogin",
 		components: {
@@ -34,6 +34,7 @@
 			}
 		},
 		methods: {
+			...mapMutations(['changeLogin']),
 			goBack(){
 				this.$router.go(-1);
 			},
@@ -42,15 +43,18 @@
 						.post('/login',{
 							username: this.loginForm.username,
 							password: this.loginForm.password
-						}).then(successResponse=>{
-					if(successResponse.data.code===200)
-						this.$router.push('/home')
+						}).then(res=>{
+					if(res.data.code===200)
+					{
+						this.userToken = res.data.userID;
+						this.changeLogin(this.userToken)
+						this.$store.commit('getUserInfo',res.data.userEntity)
+						// console.log(this.$store.state.userInfo);
+						this.$router.replace('/info')
+					}
 					else
-						console.log('没找到对应数据');
-				}).catch(failResponse =>{})
-			},
-			getMultiData(){
-
+						this.$toast('登录失败',2000)
+				})
 			}
 		}
 	}
@@ -58,6 +62,7 @@
 <style scoped>
 	.db_login {
 		font-size: 16px;
+
 	}
 	.nav-bar {
 
@@ -88,7 +93,7 @@
 	.db_login .db_login_form .form_btn{
 		margin-top: 10px;
 	}
-	.db_login .form_btn button{
+	.db_login .form_btn input{
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;

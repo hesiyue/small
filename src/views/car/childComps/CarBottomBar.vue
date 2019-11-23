@@ -9,7 +9,7 @@
              合计: ￥{{totalPrice}}
         </div>
 
-        <div class="calculate">
+        <div class="calculate" @click="toCalculate">
             去结算({{calculate}})
         </div>
     </div>
@@ -17,6 +17,8 @@
 
 <script>
     import CheckButton from "components/content/checkButton/CheckButton";
+    import {getCartList, toCalculate} from "../../../network/cart";
+
     export default {
         name: "CarBottomBar",
         components: {
@@ -41,7 +43,7 @@
                if(cartList.length===0)
                    return false
                return cartList.every(item=>item.checked)
-           }
+           },
         },
         methods: {
             checkAll(){
@@ -50,6 +52,21 @@
                     cartList.forEach(item=>item.checked=false)
                 }else
                     cartList.forEach(item=>item.checked=true)
+            },
+            toCalculate(){
+                const cartList = this.$store.getters.cartList;
+                cartList.forEach(item=>{
+                    if(item.checked===true){
+                       toCalculate(this.$store.state.Authorization,item.id).then(res=>{
+                            if(res.data.code===200){
+                                cartList.splice(cartList.indexOf(item),1)
+                                this.$store.commit('changeBalance',res.data.userEntity.balance)
+                            }else {
+                                this.$toast('结算失败')
+                            }
+                       })
+                    }
+                })
             }
         }
     }

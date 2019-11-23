@@ -34,6 +34,7 @@
     import {debounce} from "../../common/utils";
     import DetailBottomBar from "./childComps/DetailBottomBar";
     import {getGoodsDetail, getGoodsImg, getHomeMultiData} from "../../network/home";
+    import {updateCartGoodsNum} from "../../network/detail";
 
 
     export default {
@@ -53,7 +54,7 @@
         mixins:[itemListenerMixin,backTopMixin],
         data(){
             return {
-                id: null,
+                id:null,
                 detailGoods: {
                     id: null,
                     title: null,
@@ -107,7 +108,7 @@
                 itemImgListener: null,
                 themeTopYs:[],
                 getThemeTop:null,
-
+                indexImg:null
             }
         },
         created() {
@@ -119,18 +120,19 @@
                 this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
                 this.themeTopYs.push(this.$refs.recommand.$el.offsetTop)
             },100)
-            getGoodsDetail(4).then(res=>{
+            getGoodsDetail(this.id).then(res=>{
                 const detail = res.data
                 this.detailGoods.id = detail.id
                 this.detailGoods.title = detail.title
                 this.detailGoods.oldPrice = detail.oldprice
                 this.detailGoods.price = detail.price
                 this.detailGoods.desc = detail.desc
+                this.indexImg = detail.img
             })
             getHomeMultiData().then(res=>{
                 this.goods.push(...res.data)
             })
-            getGoodsImg(4).then(res=>{
+            getGoodsImg(this.id).then(res=>{
                const detail = res.data
                detail.forEach(item=>{
                    this.detailGoods.img.push(item.url)
@@ -138,23 +140,10 @@
             })
         },
         mounted() {
-            getGoodsDetail(4).then(res=>{
-                const detail = res.data
-                this.detailGoods.id = detail.id
-                this.detailGoods.title = detail.title
-                this.detailGoods.oldPrice = detail.oldprice
-                this.detailGoods.price = detail.price
-                this.detailGoods.desc = detail.desc
-            })
             getHomeMultiData().then(res=>{
                 this.goods.push(...res.data)
             })
-            getGoodsImg(4).then(res=>{
-                const detail = res.data
-                detail.forEach(item=>{
-                    this.detailGoods.img.push(item.url)
-                })
-            })
+
         },
         activated() {
         },
@@ -182,8 +171,8 @@
                 this.isTabFixed = (-position.y> this.tabOffSetTop)
             },
             addCart(){
-                const product = {
-                    image: 'https://s5.mogucdn.com/mlcdn/c45406/190829_35c1dfh3ik0f63b38fk04533dgf3c_640x960.jpg_468x468.jpg',
+                let product = {
+                    img: this.indexImg,
                     title: this.detailGoods.title,
                     desc:  this.detailGoods.desc,
                     price: this.detailGoods.price,
@@ -191,8 +180,15 @@
                 }
                 // 调用mutations时用commit,调用actions用patch
                 // this.$store.commit('addCart',product)
-                this.$store.dispatch('addCart',product).then(res=>{
-                    this.$toast('加入购物车成功',4000)
+                // this.$store.dispatch('addCart',product).then(res=>{
+                //     this.$toast(res,4000)
+                // })
+                updateCartGoodsNum(this.$store.state.Authorization,product.id,1).then(res=>{
+                    if(res.data.code === 200){
+                        this.$store.dispatch('addCart',product).then(res=>{
+                            this.$toast(res,4000)
+                        })
+                    }
                 })
             },
             toBuy(){

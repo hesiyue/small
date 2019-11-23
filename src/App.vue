@@ -5,7 +5,9 @@
           <router-view></router-view>
       </keep-alive>
    <main-tab-bar></main-tab-bar>
-  </div>
+      <icon></icon>
+      <svg-icon></svg-icon>
+</div>
 </template>
 
 
@@ -13,10 +15,11 @@
 <script>
 
     import MainTabBar from "./components/content/mainTabBar/MainTabBar";
-
-  export default {
-    components: {MainTabBar}
-  }
+    import Icon from 'content/Icon/Icon.vue'
+    import SvgIcon from 'content/Icon/svg.vue'
+    export default {
+        components: {MainTabBar,Icon,SvgIcon}
+    }
 
 </script>
 

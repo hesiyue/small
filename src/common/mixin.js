@@ -3,7 +3,7 @@ import BackTop from "components/content/backTop/BackTop";
 
 export const itemListenerMixin = {
     mounted(){
-        const refresh = debounce(this.$refs.scroll.refresh,200)
+        const refresh = debounce(this.$refs.scroll.refresh,100)
         this.itemImgListener = ()=>{
             refresh()}
         this.$bus.$on('itemImgLoad',this.itemImgListener)

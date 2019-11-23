@@ -10,6 +10,7 @@
     import {mapGetters} from 'vuex'
     import Scroll from "components/common/scroll/Scroll";
     import CartListItem from "./CartListItem";
+    import {getCart} from "../../../network/cart";
 
     export default {
         name: "CartList",
@@ -17,12 +18,26 @@
             Scroll,
             CartListItem
         },
+        data(){
+            return {
+
+            }
+        },
         computed: {
-            ...mapGetters(["cartList"])
+            ...mapGetters(['cartList'])
         },
         activated() {
             this.$refs.scroll.finishPullUp()
             this.$refs.scroll.refresh()
+        },
+        created() {
+            getCart(this.$store.state.Authorization).then(res=>{
+                res.data.list.forEach(item=>{
+                    this.$store.dispatch('addCart',item.goodsDetailEntity)
+                    this.$store.commit('addToCounter',item)
+
+                })
+            })
         }
     }
 </script>

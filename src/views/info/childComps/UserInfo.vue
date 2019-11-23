@@ -1,14 +1,15 @@
 <template>
     <div class="user-info">
-      <a href="#" class="clear-fix">
+      <div class="clear-fix">
           <slot name="user-icon">
               <svg class="privateImage-svg left">
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
               </svg>
           </slot>
-          <div class="login-info left" @click="toLogin">
+          <div class="login-info left" >
               <slot name="user-nickname">
-                  <div>登录/注册</div>
+                  <div v-if="loginSuccess" @click="toLogin">登录/注册</div>
+                  <div v-else>{{userName}}</div>
               </slot>
               <div class="phone">
                   <span>
@@ -18,26 +19,33 @@
               </div>
           </div>
           <slot data-v-735ff1be="" fill="#fff" class="arrow-svg right"><use data-v-735ff1be="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></slot>
-      </a>
+      </div>
     </div>
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
     export default {
         name: "UserInfo",
         data(){
             return {
-                loginForm: {
-                    username: '',
-                    password: ''
-                }
             }
         },
         methods: {
             toLogin(){
-                this.$router.push('/userlogin')
+                this.$router.push('/login')
+            },
+        },
+        computed: {
+            loginSuccess(){
+              return   this.$store.state.Authorization === ''
+            },
+            userName(){
+                return this.$store.state.userInfo.username
             }
-        }
+
+        },
+
     }
 </script>
 

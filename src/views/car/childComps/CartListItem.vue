@@ -4,7 +4,7 @@
             <CheckButton :is-checked="cart.checked" @click.native="checkClick"></CheckButton>
         </div>
         <div class="item-img">
-            <img :src="cart.image" alt="商品图片">
+            <img :src="cart.img" alt="商品图片">
         </div>
         <div class="item-info">
             <div class="item-title">{{cart.title}}</div>
