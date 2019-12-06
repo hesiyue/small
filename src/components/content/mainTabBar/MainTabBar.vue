@@ -36,5 +36,6 @@
 </script>
 
 <style scoped>
-
+  .tabbar {
+  }
 </style>

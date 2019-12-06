@@ -178,16 +178,15 @@
                     price: this.detailGoods.price,
                     id: this.detailGoods.id
                 }
-                // 调用mutations时用commit,调用actions用patch
+                // 调用mutations时用commit,调用actions用dispatch
                 // this.$store.commit('addCart',product)
                 // this.$store.dispatch('addCart',product).then(res=>{
                 //     this.$toast(res,4000)
                 // })
                 updateCartGoodsNum(this.$store.state.Authorization,product.id,1).then(res=>{
                     if(res.data.code === 200){
-                        this.$store.dispatch('addCart',product).then(res=>{
-                            this.$toast(res,4000)
-                        })
+                           this.$store.commit('changeGoodsInfoState')
+                            this.$toast('添加购物车成功',4000)
                     }
                 })
             },

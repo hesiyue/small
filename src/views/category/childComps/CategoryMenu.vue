@@ -19,7 +19,7 @@
         data(){
             return {
                categories:[
-                   '上衣','裤子','裙子','套装','内衣','女鞋','护肤','美妆','运动','配饰','男友','家居','百货'
+                   '上衣','裤子','裙子','套装','内衣','女鞋','护肤','美妆','运动','配饰','男友','家居','百货','宠物','男装'
                ],
                currentIndex: 0
             }
@@ -41,7 +41,7 @@
       position: absolute;
       top: 44px;
       bottom: 49px;
-      z-index: 9;
+      /*z-index: 9;*/
       overflow: hidden;
   }
   .menu-list-item {

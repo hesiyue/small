@@ -10,6 +10,7 @@ const Detail = ()=> import('../views/detail/Detail')
 const Login = ()=> import('../views/info/Info')
 const Profile = ()=> import('../views/info/Profile')
 const UserLogin = ()=> import('../views/login/UserLogin')
+const Register = ()=> import('../views/login/Register')
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,10 @@ const routes = [
   {
     path: '/login',
     component:UserLogin
+  },
+  {
+    path: '/register',
+    component: Register
   }
 ]
 
@@ -57,18 +62,7 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to,from,next)=>{
-//   if(to.path==='/login'){
-//     next();
-//   }else {
-//     let token = localStorage.getItem('Authorization');
-//     if(token ==='null' || token===''||token===null){
-//       next('/login');
-//     }else {
-//       next();
-//     }
-//   }
-// })
+
 
     router.beforeEach((to,from,next)=>{
       if(to.matched.some(m=>m.meta.requiresAuth)){

@@ -18,7 +18,12 @@
     import Icon from 'content/Icon/Icon.vue'
     import SvgIcon from 'content/Icon/svg.vue'
     export default {
-        components: {MainTabBar,Icon,SvgIcon}
+        components: {MainTabBar,Icon,SvgIcon},
+        computed: {
+            key(){
+                return this.$route.name !== undefined? this.$route.name+ new Date():this.$store + +new Date();
+            }
+        }
     }
 
 </script>

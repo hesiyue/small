@@ -37,3 +37,13 @@ export function getGoodsDetail(id) {
     })
 
 }
+
+export function getSearchMessage(text) {
+    return axios({
+        method: 'post',
+        url: '/getSearchMessage',
+        params: {
+            text
+        }
+    })
+}

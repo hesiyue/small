@@ -32,6 +32,11 @@
                 }
             }
         },
+        data(){
+            return {
+                count: this.cart.count
+            }
+        },
         methods: {
             checkClick(){
                 this.cart.checked = !this.cart.checked

@@ -5,6 +5,7 @@ import store from './store'
 import toastRegistry from "./components/common/toast";
 import FastClick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
+import ElementUI from 'element-ui'
 
 
 
@@ -17,13 +18,14 @@ FastClick.attach(document.body)
 Vue.use(VueLazyLoad)
 // 这里也可以直接执行 toastRegistry()
 Vue.use(toastRegistry)
+Vue.use(ElementUI)
 
 
 axios.interceptors.request.use(
     config =>{
-        if(localStorage.getItem('Authorization')){
-            config.headers.Authorization = localStorage.getItem('Authorization');
-        }
+        // if(this.$store.state.Authorization){
+        //     config.headers.Authorization = this.$store.state.Authorization;
+        // }
         return config;
     },
     error => {

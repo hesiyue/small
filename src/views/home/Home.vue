@@ -1,6 +1,9 @@
 <template>
     <div class="home">
-       <nav-bar class="nav-bar"><div slot="center">主页</div></nav-bar>
+       <nav-bar class="nav-bar"><div slot="center">
+           <input type="text" placeholder="搜索框" v-model="searchMessage" class="searchBox">
+           <input type="button" value="搜索" @click="getGoodsMessage" class="btn_Search">
+       </div></nav-bar>
         <tab-control :titles="Text" ref="tabControl2" @tabClick="changeGoods" class="tab-control" v-show="isTabFixed"></tab-control>
 <!--        监听组件的原生事件要用.native-->
        <back-top @click.native="backToTop" v-show="isShow"></back-top>
@@ -29,11 +32,12 @@
     import Scroll from "components/common/scroll/Scroll";
     import {backTopMixin, itemListenerMixin} from "../../common/mixin";
     import {POP,NEW,SELL} from "../../common/const";
-    import {getHomeData} from "../../network/home";
+    import {getHomeData,getSearchMessage} from "../../network/home";
+    import Info from "../info/Info";
 
     export default {
         name: "Home",
-        components: {GoodsList,TabControl, HomeSwiper, RecommandView, TabBarItem,NavBar, TabBar,Scroll},
+        components: {Info, GoodsList,TabControl, HomeSwiper, RecommandView, TabBarItem,NavBar, TabBar,Scroll},
         data(){
             return {
                 Text: ['流行','新款','精选'],
@@ -46,7 +50,8 @@
                 tabOffSetTop: 0,
                 isTabFixed: false,
                 saveY :0,
-                itemImgListener: null
+                itemImgListener: null,
+                searchMessage:''
 
             }
         },
@@ -92,6 +97,15 @@
           getHomeProducts(type){
               getHomeData(type).then(res=>{
                   this.goods[type].list.push(...res.data)
+              })
+          },
+          showMessage(){
+              console.log(this.searchMessage);
+              this.searchMessage = '';
+          },
+          getGoodsMessage(){
+              getSearchMessage(this.searchMessage).then(res=>{
+
               })
           }
         },
@@ -159,6 +173,15 @@
        background-color: #ffffff;
    }
 
+   .searchBox {
+       border-radius: 5px;
+       background: #fff;
+   }
+
+    .btn_Search {
+        border-radius: 5px;
+        margin-left: 5px;
+    }
 
 
 

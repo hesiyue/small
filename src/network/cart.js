@@ -3,7 +3,7 @@ import axios from 'axios'
 export function getCartList(userID) {
     return axios({
         method:'post',
-        url:'queryCartByUserID',
+        url:'/queryCartByUserID',
         params: {
             userID
         }

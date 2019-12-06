@@ -61,8 +61,10 @@
                             if(res.data.code===200){
                                 cartList.splice(cartList.indexOf(item),1)
                                 this.$store.commit('changeBalance',res.data.userEntity.balance)
+                            }else if(res.data.code===201){
+                                this.$toast('库存不足')
                             }else {
-                                this.$toast('结算失败')
+                                this.$toast('余额不足')
                             }
                        })
                     }
@@ -76,15 +78,14 @@
   .car-barttom-bar {
       position: absolute;
       display: flex;
-      bottom: 50px;
       left: 0;
       right: 0;
-
+      z-index: 9;
       height: 40px;
       line-height: 40px;
-
+      bottom: 50px;
       background-color: #eee;
-
+      overflow: hidden;
       font-size: 14px;
   }
    .select-all {

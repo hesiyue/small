@@ -1,6 +1,6 @@
 <template>
     <div id="detail-swiper">
-       <swiper class="swiper" :options="swiperOption" v-if="detailGoods.img.length>1">
+       <swiper class="swiper" :options="swiperOption">
            <swiper-slide class="swiperslid" v-for="(item,index) in detailGoods.img" :key="index">
                <img :src="item">
            </swiper-slide>
@@ -23,9 +23,9 @@
                 swiperOption: {
                     loop: true,
                     autoplay: {
-                      disableOnInteraction: false,
-                      stopOnLastSlide: false,
-                      delay:1800
+                        disableOnInteraction: false,
+                        stopOnLastSlide: false,
+                        delay:1800
                     },
                     speed:1800,
                     notNextTick: true,
@@ -64,7 +64,8 @@
   }
    .swiper img {
        width: 100%;
-       height: 450px;
+       height: 525px;
        overflow: hidden;
+       z-index: 9;
    }
 </style>

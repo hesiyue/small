@@ -13,7 +13,7 @@
 		</div>
 		<div class="login_other">使用其它方式登录 & 找回密码</div>
 		<div class="regist_download">
-			<a href="#">注册用户</a><a href="#">下载App</a>
+			<a @click="register">注册用户</a><a href="#">下载App</a>
 		</div>
 	</div>
 </template>
@@ -55,6 +55,9 @@
 					else
 						this.$toast('登录失败',2000)
 				})
+			},
+			register(){
+				this.$router.push('/register')
 			}
 		}
 	}
